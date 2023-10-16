@@ -31,6 +31,9 @@ bool Game::Init()
     {
         return false;
     }
+
+    
+    return true;
 }
 
 
