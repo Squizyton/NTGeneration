@@ -2,6 +2,8 @@
 
 
 #include <SDL.h>
+#undef main
+
 
 class Game
 {
@@ -20,5 +22,5 @@ private:
 
 
     //Get window as a pointer so we have direct access to it
-    SDL_Window* window = nullptr;
+    SDL_Window* window_ = nullptr;
 };

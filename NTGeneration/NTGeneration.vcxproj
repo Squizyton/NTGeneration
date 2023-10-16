@@ -135,9 +135,11 @@
   <ItemGroup>
     <ClCompile Include="NTGeneration.cpp" />
     <ClCompile Include="Scripts\Game.cpp" />
+    <ClCompile Include="Scripts\Utilties\TextureManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scripts\Game.h" />
+    <ClInclude Include="Scripts\Utilties\TextureManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
