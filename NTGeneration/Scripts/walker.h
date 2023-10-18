@@ -8,6 +8,7 @@ public:
     Vector2 dir;
     Vector2 pos;
     bool WillIGetDestroyed(float chanceToBeKaboomed);
-    void ChangeDirection(Vector2 newDirection);
+    void ChangeDirection(float chanceToChangeDir);
+    void MoveWalker();
 };
     

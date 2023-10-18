@@ -1,11 +1,10 @@
 #include "LevelGenerator.h"
 
+#include <algorithm>
 #include <cmath>
 #include <ctime>
+#include <string>
 #include <vector>
-
-
-Direction* direction = new Direction();
 
 
 typedef std::vector<std::vector<LevelGenerator::GridSpace>> Matrix;
@@ -14,28 +13,6 @@ typedef std::vector<LevelGenerator::GridSpace> Row;
 LevelGenerator::LevelGenerator(float worldUnits)
 {
     worldUnitsInOneGridCell = worldUnits;
-}
-
-
-Vector2 RandomDirection()
-{
-    /* initialize random seed: */
-    srand(time(nullptr));
-
-    //pick random int between 0 and 3
-    int choice = rand() % 4 + 1;
-    //use that int to chose a direction
-    switch (choice)
-    {
-    case 0:
-        return *Direction::down;
-    case 1:
-        return *Direction::left;
-    case 2:
-        return *Direction::up;
-    default:
-        return *Direction::right;
-    }
 }
 
 
@@ -65,8 +42,8 @@ void LevelGenerator::Setup(const int room_width, const int room_height)
 
     //TODO:: Maybe move this into it's own thing
     //create the first walker
-    auto* walker = new struct walker;
-    walker->dir = RandomDirection();
+    auto* walker = new class walker;
+    walker->ChangeDirection(1);
 
 
     //Get center of the grid
@@ -79,6 +56,12 @@ void LevelGenerator::Setup(const int room_width, const int room_height)
     GenerateFloor(gridMatrix);
 }
 
+
+void LevelGenerator::SpawnNewWalker()
+{
+}
+
+
 //TODO start converting things to async later on
 void LevelGenerator::GenerateFloor(std::vector<std::vector<LevelGenerator::GridSpace>> gridMatrix)
 {
@@ -88,7 +71,7 @@ void LevelGenerator::GenerateFloor(std::vector<std::vector<LevelGenerator::GridS
 
     do
     {
-        //for every walker create
+        //for every walker create a floor tile under them
         for (int i = 0; i < walkers.size(); i++)
         {
             walker* walker = walkers[i];
@@ -98,7 +81,66 @@ void LevelGenerator::GenerateFloor(std::vector<std::vector<LevelGenerator::GridS
         }
 
 
+        //See if we are destroying a walker
+        int numberChecks = walkers.size();
+        for (int x = 0; x < numberChecks; x++)
+        {
+            if (walkers[x]->WillIGetDestroyed(chanceWalkerDestroy) && walkers.size() > 1)
+            {
+                //remove walker then break so we only remove one
+                walkers.erase(walkers.begin() + x);
+                break;
+            }
+        }
+
+        //Change Direction
+        for (int x = 0; x < numberChecks; x++)
+        {
+            walkers[x]->ChangeDirection(chanceWalkerChangeDir);
+        }
+
+
+        //Spawn new walker
+        numberChecks = walkers.size();
+        for (int i = 0; i < numberChecks; i++)
+        {
+            if (rand() % 10 + 1 < chanceWalkerChangeDir * 10 && numberChecks < maxWalkers)
+            {
+                walker* walker = new class walker;
+                walker->ChangeDirection(1);
+                walker->pos = walkers[i]->pos;
+                walkers.push_back(walker);
+            }
+        }
+
+        //move the walkers
+        for (int i = 0; i < numberChecks; i++)
+        {
+            walkers[i]->MoveWalker();
+        }
+
+
+        //check boundries
+        for (int i = 0; i < numberChecks; i++)
+        {
+            walker thisWalker = *walkers[i];
+
+            thisWalker.pos.x = std::clamp(thisWalker.pos.x, 1.f, static_cast<float>(roomWidth - 2));
+            thisWalker.pos.y = std::clamp(thisWalker.pos.y, 1.f, static_cast<float>(roomWidth - 2));
+
+            walkers[i] = &thisWalker;
+        }
+
+
+        // if ((float)NumberOfFloors() / (float)grid.Length > percentToFill){
+        //     break;
+
+
         iterations++;
+        printf("%d",iterations);
     }
-    while (iterations < 10000000);
+    while (iterations < 100);
+
+
+    printf("done");
 }
