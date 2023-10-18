@@ -3,9 +3,12 @@
 #include <SDL_image.h>
 #include <iostream>
 
+#include "LevelGenerator.h"
 
 
 SDL_Renderer* Game::renderer = nullptr;
+LevelGenerator* generator = new LevelGenerator();
+
 
 bool Game::Init()
 {
@@ -35,7 +38,9 @@ bool Game::Init()
         return false;
     }
 
-
+ 
+    generator->Setup(10,10);
+    
     return true;
 }
 

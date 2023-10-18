@@ -4,6 +4,7 @@
 #include <iostream>
 
 #include "Scripts/Game.h"
+#include "Scripts/Utilties/Utils.h"
 
 int main(int argc, char* argv[])
 {
@@ -14,8 +15,8 @@ int main(int argc, char* argv[])
       game.GameLoop();
    }
 
+   
    game.ShutDown();
-
    return 0;
    
 }

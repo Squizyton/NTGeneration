@@ -135,11 +135,17 @@
   <ItemGroup>
     <ClCompile Include="NTGeneration.cpp" />
     <ClCompile Include="Scripts\Game.cpp" />
+    <ClCompile Include="Scripts\LevelGenerator.cpp" />
     <ClCompile Include="Scripts\Utilties\TextureManager.cpp" />
+    <ClCompile Include="Scripts\Utilties\Utils.cpp" />
+    <ClCompile Include="Scripts\walker.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scripts\Game.h" />
+    <ClInclude Include="Scripts\LevelGenerator.h" />
     <ClInclude Include="Scripts\Utilties\TextureManager.h" />
+    <ClInclude Include="Scripts\Utilties\Utils.h" />
+    <ClInclude Include="Scripts\walker.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="assets" />
