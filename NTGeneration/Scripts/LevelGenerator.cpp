@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <cmath>
 #include <ctime>
+#include <future>
 #include <string>
 #include <vector>
 
@@ -10,20 +11,39 @@
 typedef std::vector<std::vector<LevelGenerator::GridSpace>> Matrix;
 typedef std::vector<LevelGenerator::GridSpace> Row;
 
+bool printMap = false;
+
 LevelGenerator::LevelGenerator(float worldUnits)
 {
     worldUnitsInOneGridCell = worldUnits;
 }
 
 
-void LevelGenerator::Setup(const int room_width, const int room_height)
+int GetNumberOfFloors(std::vector<std::vector<LevelGenerator::GridSpace>> gridMatrix, int roomWidth, int roomHeight)
+{
+    int numberOfFloors = 0;
+    
+    for (int x = 0; x < roomWidth; x++)
+    {
+        for (int y = 0; y < roomHeight; y++)
+        {
+            if(gridMatrix[x][y] == LevelGenerator::ground)
+            {
+                numberOfFloors++;
+            }
+        }
+    }
+
+    return numberOfFloors;
+}
+
+
+Matrix LevelGenerator::Setup(const int room_width, const int room_height)
 {
     //set the room wid
     this->roomWidth = static_cast<int>(std::round(static_cast<float>(room_width) / worldUnitsInOneGridCell));
     this->roomHeight = static_cast<int>(std::round(static_cast<float>(room_height) / worldUnitsInOneGridCell));
-
-    const int height = room_width;
-
+    
 
     Matrix gridMatrix;
 
@@ -38,9 +58,7 @@ void LevelGenerator::Setup(const int room_width, const int room_height)
 
         gridMatrix.push_back(row);
     }
-
-
-    //TODO:: Maybe move this into it's own thing
+    
     //create the first walker
     auto* walker = new class walker;
     walker->ChangeDirection(1);
@@ -51,9 +69,8 @@ void LevelGenerator::Setup(const int room_width, const int room_height)
     walker->pos = *spawnPos;
 
     walkers.push_back(walker);
-
-
-    GenerateFloor(gridMatrix);
+    
+   return GenerateFloor(gridMatrix);
 }
 
 
@@ -63,10 +80,12 @@ void LevelGenerator::SpawnNewWalker()
 
 
 //TODO start converting things to async later on
-void LevelGenerator::GenerateFloor(std::vector<std::vector<LevelGenerator::GridSpace>> gridMatrix)
+Matrix LevelGenerator::GenerateFloor(std::vector<std::vector<GridSpace>> &grid_array)
 {
     printf("Generating Floor");
 
+    
+    
     int iterations = 0;
 
     do
@@ -75,9 +94,9 @@ void LevelGenerator::GenerateFloor(std::vector<std::vector<LevelGenerator::GridS
         for (int i = 0; i < walkers.size(); i++)
         {
             walker* walker = walkers[i];
+            
 
-
-            gridMatrix[static_cast<int>(walker->pos.x)][static_cast<int>(walker->pos.y)] = static_cast<GridSpace>(2);
+            grid_array[static_cast<int>(walker->pos.x)][static_cast<int>(walker->pos.y)] = static_cast<GridSpace>(2);
         }
 
 
@@ -94,7 +113,7 @@ void LevelGenerator::GenerateFloor(std::vector<std::vector<LevelGenerator::GridS
         }
 
         //Change Direction
-        for (int x = 0; x < numberChecks; x++)
+        for (int x = 0; x < numberChecks - 1; x++)
         {
             walkers[x]->ChangeDirection(chanceWalkerChangeDir);
         }
@@ -104,9 +123,9 @@ void LevelGenerator::GenerateFloor(std::vector<std::vector<LevelGenerator::GridS
         numberChecks = walkers.size();
         for (int i = 0; i < numberChecks; i++)
         {
-            if (rand() % 10 + 1 < chanceWalkerChangeDir * 10 && numberChecks < maxWalkers)
+            if (Utils::intRand(1,10) < static_cast<int>(chanceWalkerChangeDir * 10) && numberChecks < maxWalkers)
             {
-                walker* walker = new class walker;
+                auto* walker = new class walker;
                 walker->ChangeDirection(1);
                 walker->pos = walkers[i]->pos;
                 walkers.push_back(walker);
@@ -132,15 +151,30 @@ void LevelGenerator::GenerateFloor(std::vector<std::vector<LevelGenerator::GridS
         }
 
 
-        // if ((float)NumberOfFloors() / (float)grid.Length > percentToFill){
-        //     break;
-
-
+        
+         //printf("Math:%f", static_cast<float>(GetNumberOfFloors(gridMatrix, roomWidth, roomHeight)) / static_cast<float>(roomWidth * roomHeight));
+          if (static_cast<float>(GetNumberOfFloors(grid_array, roomWidth, roomHeight)) / static_cast<float>(roomWidth * roomHeight) > percentToFill)
+          {
+              printf("Percentage Filled!");
+              //iterations = 100000001;
+              break;
+          }
         iterations++;
-        printf("%d",iterations);
+       // printf("%d",iterations);
     }
-    while (iterations < 100);
+    while (iterations <  100000000);
 
-
+if(printMap)
+{
+    for (int x = 0; x < roomWidth; x++)
+    {
+        for (int y = 0; y < roomWidth; y++)
+        {
+            printf("%d ",grid_array[x][y]);
+        }
+        printf("\n");
+    }
+}
     printf("done");
+    return grid_array;
 }

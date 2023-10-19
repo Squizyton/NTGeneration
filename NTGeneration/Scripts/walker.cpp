@@ -2,17 +2,22 @@
 
 #include <cstdlib>
 #include <ctime>
+#include <random>
+#include <thread>
 
 
 Direction* direction = new Direction();
 
+
+
+
 Vector2 RandomDirection()
 {
     /* initialize random seed: */
-    srand(time(nullptr));
+    
+    int choice = Utils::intRand(0,3);
 
-    //pick random int between 0 and 3
-    int choice = rand() % 4 + 1;
+    // printf("%d\n",choice);
     //use that int to chose a direction
     switch (choice)
     {
@@ -30,7 +35,7 @@ Vector2 RandomDirection()
 bool walker::WillIGetDestroyed(float chanceToBeKaboomed)
 {
     //TODO:: Function not thread safe (working on it)
-    int random = rand() % 10 + 1;
+    int random = Utils::intRand(1,10);
 
 
     if (random < chanceToBeKaboomed * 10)
@@ -43,8 +48,7 @@ bool walker::WillIGetDestroyed(float chanceToBeKaboomed)
 
 void walker::ChangeDirection(float chanceToChangeDir)
 {
-    //TODO:: Still not thread safe. FIX IT
-    int random = rand() % 10 + 1;
+    int random = Utils::intRand(1,10);
 
 
     if (random < chanceToChangeDir * 10)

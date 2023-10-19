@@ -8,31 +8,27 @@
 class LevelGenerator
 {
 public:
-    LevelGenerator(float worldUnits = 1.f);
-    void Setup(int room_width, int room_height);
-
     enum GridSpace { null, empty, ground, wall };
 
+    LevelGenerator(float worldUnits = 1.f);
+    std::vector<std::vector<GridSpace>> Setup(int room_width, int room_height);
+    //What is this Spot in Grid classified as
 private:
-    //What is this spot
-
-
     float worldUnitsInOneGridCell = 1;
     int roomHeight, roomWidth;
 
 
     std::pmr::vector<walker*> walkers;
 
-
     //Generation Variables
     float chanceWalkerChangeDir = .5f;
-    float chanceWalkerSpawn = 0.05f;
-    float chanceWalkerDestroy = .05f;
+    float chanceWalkerSpawn = 0.2f;
+    float chanceWalkerDestroy = .5f;
     const int maxWalkers = 10;
-    float percentToFill = .2f;
+    float percentToFill = .3f;
 
 
     //functions
-    void GenerateFloor(std::vector<std::vector<LevelGenerator::GridSpace>> gridArray);
+    std::vector<std::vector<GridSpace>> GenerateFloor(std::vector<std::vector<GridSpace>>& grid_array);
     void SpawnNewWalker();
 };

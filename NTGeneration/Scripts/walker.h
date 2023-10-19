@@ -4,6 +4,8 @@
 
 class walker
 {
+
+    
 public:
     Vector2 dir;
     Vector2 pos;

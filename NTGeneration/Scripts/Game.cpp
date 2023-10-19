@@ -1,5 +1,6 @@
 #include "Game.h"
 
+#include <future>
 #include <SDL_image.h>
 #include <iostream>
 
@@ -9,6 +10,10 @@
 SDL_Renderer* Game::renderer = nullptr;
 LevelGenerator* generator = new LevelGenerator();
 
+typedef std::vector<std::vector<LevelGenerator::GridSpace>> Matrix;
+
+
+Matrix Atest(LevelGenerator generator);
 
 bool Game::Init()
 {
@@ -20,7 +25,7 @@ bool Game::Init()
 
 
     //Create the window
-    window_ = SDL_CreateWindow("Chopping Trees",SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1270, 800, 0);
+    window_ = SDL_CreateWindow("NT Generation",SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1270, 800, 0);
 
 
     //if Window failed to recreate
@@ -38,27 +43,28 @@ bool Game::Init()
         return false;
     }
 
- 
-    generator->Setup(10,10);
+    Matrix genMatrix = generator->Setup(100,100);
+
     
+    
+
     return true;
 }
 
 
 void Game::GameLoop()
 {
-   while(isRunning)
-   {
-       HandleEvents();
-       Update();
-       Draw();
-   }
+    while (isRunning)
+    {
+        HandleEvents();
+        Update();
+        Draw();
+    }
 }
 
 
 void Game::Update()
 {
-    
 }
 
 void Game::HandleEvents()
@@ -83,14 +89,13 @@ void Game::HandleEvents()
 }
 
 
-
 void Game::Draw()
 {
-     SDL_RenderClear(renderer);
-     SDL_SetRenderDrawColor(renderer,30,130,76,1);
-   
-   
-     SDL_RenderPresent(renderer);
+    SDL_RenderClear(renderer);
+    SDL_SetRenderDrawColor(renderer, 30, 130, 76, 1);
+
+
+    SDL_RenderPresent(renderer);
 }
 
 

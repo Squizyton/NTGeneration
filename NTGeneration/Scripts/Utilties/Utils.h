@@ -1,9 +1,19 @@
 #pragma once
+#include <random>
+#include <thread>
 
 class Utils
 {
 public:
-    
+    //While this is Technically slower...It's A)Thread safe and won't crash anything...B) Random. 
+    static int intRand(const int & min, const int & max)
+    {
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std:: uniform_int_distribution<> distr(min,max);
+
+        return distr(gen);
+    }
 };
 
 
@@ -22,3 +32,4 @@ public:
    inline static Vector2* left = new Vector2(-1.f,0);
    inline static Vector2* right = new Vector2(1.f,0);
 };
+
