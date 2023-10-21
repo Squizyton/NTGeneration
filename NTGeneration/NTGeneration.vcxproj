@@ -150,10 +150,12 @@
     <ClInclude Include="Scripts\walker.h" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="assets\debugSprites" />
     <Folder Include="assets\level1\ground" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="assets\debugSprites\1.png" />
+    <Content Include="assets\debugSprites\2.png" />
+    <Content Include="assets\debugSprites\3.png" />
     <Content Include="assets\level1\walls\wall.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
