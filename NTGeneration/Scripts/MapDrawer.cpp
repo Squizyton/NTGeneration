@@ -16,7 +16,7 @@ void MapDrawer::DrawMap(Matrix& grid_array, int roomWidth, int roomHeight)
             {
                 int offsetX = 32 / 2;
                 int offsetY = 32 / 2;
-                
+
                 //TODO::IT IS NOT 16 YA DUMBASS
                 dest.x = x * 1 * offsetX;
                 dest.y = y * 1 * offsetY;
@@ -28,30 +28,35 @@ void MapDrawer::DrawMap(Matrix& grid_array, int roomWidth, int roomHeight)
                     dest.y = 0;
                     dest.y = (y + 1) * 16;
                     TextureManager::Draw(wall_textures_["center"], src, dest);
-                    
+                    dest.x = x * 1 * offsetX;
+                    dest.y = y * 1 * offsetY;
                 }
                 //Top Wall
                 if (grid_array[x][y - 1] == static_cast<LevelGenerator::GridSpace>(3))
                 {
-                   dest.y = 0;
-                   dest.y = (y - 1) * 16;
-                   TextureManager::Draw(wall_textures_["center"], src, dest);
+                    dest.y = 0;
+                    dest.y = (y - 1) * 16;
+                    TextureManager::Draw(wall_textures_["center"], src, dest);
+                    dest.x = x * 1 * offsetX;
+                    dest.y = y * 1 * offsetY;
                 }
                 //Right Wall
                 if (grid_array[x + 1][y] == static_cast<LevelGenerator::GridSpace>(3))
                 {
-                   dest.x = 0;
-                   dest.x = (x + 1) * 16;
-                   TextureManager::Draw(wall_textures_["center"], src, dest);
-
-                  
+                    dest.x = 0;
+                    dest.x = (x + 1) * 16;
+                    TextureManager::Draw(wall_textures_["center"], src, dest);
+                    dest.x = x * 1 * offsetX;
+                    dest.y = y * 1 * offsetY;
                 }
                 //Left Wall
                 if (grid_array[x - 1][y] == static_cast<LevelGenerator::GridSpace>(3))
                 {
-                     dest.x = 0;
-                     dest.x = (x - 1) * 16;
-                     TextureManager::Draw(wall_textures_["center"], src, dest);
+                    dest.x = 0;
+                    dest.x = (x - 1) * 16;
+                    TextureManager::Draw(wall_textures_["center"], src, dest);
+                    dest.x = x * 1 * offsetX;
+                    dest.y = y * 1 * offsetY;
                 }
             }
         }
@@ -66,7 +71,7 @@ bool MapDrawer::LoadTextures(std::string levelPath, int texHeight, int texWidth)
     wall_textures_.clear();
 
 
-    src.w = texWidth;
+    src.w = texWidth ;
     src.h = texHeight;
 
     dest.w = texWidth;
@@ -160,21 +165,27 @@ void MapDrawer::DrawDebugValues(Matrix& grid, int roomWidth, int roomHeight)
     {
         for (int y = 0; y < roomHeight; y++)
         {
-            std::string fileName = "assets/debugSprites/" + std::to_string((grid[x][y])) + ".png";
-
             dest.x = x * 16;
             dest.y = y * 16;
 
-            
-            TextureManager::Draw(TextureManager::LoadTexture(fileName.c_str()),src,dest);
 
-
-            
+            TextureManager::Draw(debugValues[grid[x][y]], src, dest);
         }
-    }  
+    }
+}
+
+void MapDrawer::LoadDebugNumbers(bool value)
+{
+    if (value)
+    {
+        for (int x = 1; x < 4; x++)
+        {
+            std::string fileName = "assets/debugSprites/" + std::to_string(x) + ".png";
+            debugValues.emplace(x, TextureManager::LoadTexture(fileName.c_str()));
+        }
+    }
 }
 
 MapDrawer::MapDrawer()
 {
-  
 }

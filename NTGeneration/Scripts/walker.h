@@ -7,6 +7,8 @@ class walker
 
     
 public:
+    int id;
+    int parentWalker;
     Vector2 dir;
     Vector2 pos;
     bool WillIGetDestroyed(float chanceToBeKaboomed);

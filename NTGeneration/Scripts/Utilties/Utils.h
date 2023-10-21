@@ -14,6 +14,14 @@ public:
 
         return distr(gen);
     }
+
+    template <typename T>
+    static void RemoveAt(std::pmr::vector<T>& vec, size_t pos)
+    {
+        typename std::vector<T>::iterator it = vec.begin();
+        std::advance(it,pos);
+        vec.erase(it);
+    }
 };
 
 

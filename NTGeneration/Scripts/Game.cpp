@@ -60,7 +60,11 @@ bool Game::Init()
     }
 
 
-    gen_matrix = generator->Setup(30, 30);
+    if(showNumbers)
+        drawer->LoadDebugNumbers(true);
+    
+
+    gen_matrix = generator->Setup(25, 25);
     std::future<bool> async_function = std::async(LoadTextures, "assets/level1", 16, 16);
 
     if (async_function.get())
@@ -113,11 +117,12 @@ void Game::Draw()
 {
     SDL_RenderClear(renderer);
     SDL_SetRenderDrawColor(renderer, 30, 130, 76, 1);
+    SDL_RenderSetLogicalSize(renderer,1280,720);
     if(texturesLoaded)
-        drawer->DrawMap(gen_matrix,30,30);
+        drawer->DrawMap(gen_matrix,25,25);
 
     if(showNumbers)
-        drawer->DrawDebugValues(gen_matrix,30,30);
+        drawer->DrawDebugValues(gen_matrix,25,25);
     
     SDL_RenderPresent(renderer);
 }

@@ -14,12 +14,10 @@ Direction* direction = new Direction();
 Vector2 RandomDirection()
 {
     /* initialize random seed: */
-    
-    int choice = Utils::intRand(0,3);
 
     // printf("%d\n",choice);
     //use that int to chose a direction
-    switch (choice)
+    switch (int choice = Utils::intRand(0,3))
     {
     case 0:
         return *Direction::down;
@@ -48,7 +46,7 @@ bool walker::WillIGetDestroyed(float chanceToBeKaboomed)
 
 void walker::ChangeDirection(float chanceToChangeDir)
 {
-    int random = Utils::intRand(1,10);
+    const int random = Utils::intRand(1,10);
 
 
     if (random < chanceToChangeDir * 10)
