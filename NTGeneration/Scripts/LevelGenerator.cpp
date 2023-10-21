@@ -97,8 +97,6 @@ Matrix LevelGenerator::GenerateFloor(std::vector<std::vector<GridSpace>>& grid_a
 
             grid_array[static_cast<int>(walker->pos.x)][static_cast<int>(walker->pos.y)] = static_cast<GridSpace>(2);
         }
-
-
         //See if we are destroying a walker
         int numberChecks = walkers.size();
         for (int x = 0; x < numberChecks; x++)

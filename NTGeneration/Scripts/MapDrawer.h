@@ -15,6 +15,7 @@ public:
     MapDrawer();
     void DrawMap(Matrix &grid_array,int roomWidth, int roomHeight);
     bool LoadTextures(std::string levelPath, int texHeight, int texWidth);
+    void DrawDebugValues(Matrix &grid, int roomWidth, int roomHeight);
 private:
     SDL_Rect src, dest;
     std::pmr::vector<SDL_Texture*> ground_textures_;

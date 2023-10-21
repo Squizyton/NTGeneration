@@ -49,9 +49,9 @@ void MapDrawer::DrawMap(Matrix& grid_array, int roomWidth, int roomHeight)
                 //Left Wall
                 if (grid_array[x - 1][y] == static_cast<LevelGenerator::GridSpace>(3))
                 {
-                  // dest.x = 0;
-                  // dest.x = (x - 1) * 16;
-                  // TextureManager::Draw(wall_textures_["center"], src, dest);
+                     dest.x = 0;
+                     dest.x = (x - 1) * 16;
+                     TextureManager::Draw(wall_textures_["center"], src, dest);
                 }
             }
         }
@@ -154,6 +154,27 @@ bool MapDrawer::LoadTextures(std::string levelPath, int texHeight, int texWidth)
     }
 }
 
+void MapDrawer::DrawDebugValues(Matrix& grid, int roomWidth, int roomHeight)
+{
+    for (int x = 0; x < roomWidth; x++)
+    {
+        for (int y = 0; y < roomHeight; y++)
+        {
+            std::string fileName = "assets/debugSprites/" + std::to_string((grid[x][y])) + ".png";
+
+            dest.x = x * 16;
+            dest.y = y * 16;
+
+            
+            TextureManager::Draw(TextureManager::LoadTexture(fileName.c_str()),src,dest);
+
+
+            
+        }
+    }  
+}
+
 MapDrawer::MapDrawer()
 {
+  
 }

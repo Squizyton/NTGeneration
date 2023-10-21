@@ -21,6 +21,10 @@ Matrix Atest(LevelGenerator generator);
 
 bool texturesLoaded = false;
 
+
+//DEBUG
+bool showNumbers = true;
+
 bool LoadTextures(std::string filePath, int width, int height)
 {
     return drawer->LoadTextures(filePath,width,height);
@@ -112,6 +116,9 @@ void Game::Draw()
     if(texturesLoaded)
         drawer->DrawMap(gen_matrix,30,30);
 
+    if(showNumbers)
+        drawer->DrawDebugValues(gen_matrix,30,30);
+    
     SDL_RenderPresent(renderer);
 }
 
