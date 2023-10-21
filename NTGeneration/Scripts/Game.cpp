@@ -5,15 +5,27 @@
 #include <iostream>
 
 #include "LevelGenerator.h"
+#include "MapDrawer.h"
+#include "Utilties/TextureManager.h"
 
 
 SDL_Renderer* Game::renderer = nullptr;
 LevelGenerator* generator = new LevelGenerator();
+MapDrawer* drawer = new MapDrawer();
+Matrix gen_matrix;
 
 typedef std::vector<std::vector<LevelGenerator::GridSpace>> Matrix;
 
 
 Matrix Atest(LevelGenerator generator);
+
+bool texturesLoaded = false;
+
+bool LoadTextures(std::string filePath, int width, int height)
+{
+    return drawer->LoadTextures(filePath,width,height);
+}
+
 
 bool Game::Init()
 {
@@ -43,10 +55,14 @@ bool Game::Init()
         return false;
     }
 
-    Matrix genMatrix = generator->Setup(100,100);
 
-    
-    
+    gen_matrix = generator->Setup(30, 30);
+    std::future<bool> async_function = std::async(LoadTextures, "assets/level1", 16, 16);
+
+    if (async_function.get())
+    {
+      texturesLoaded = true;
+    }
 
     return true;
 }
@@ -93,7 +109,8 @@ void Game::Draw()
 {
     SDL_RenderClear(renderer);
     SDL_SetRenderDrawColor(renderer, 30, 130, 76, 1);
-
+    if(texturesLoaded)
+        drawer->DrawMap(gen_matrix,30,30);
 
     SDL_RenderPresent(renderer);
 }

@@ -1,8 +1,12 @@
 #pragma once
 #include <vector>
 
+#include "LevelGenerator.h"
+#include "LevelGenerator.h"
 #include "walker.h"
 #include "Utilties/Utils.h"
+
+
 
 
 class LevelGenerator
@@ -30,5 +34,7 @@ private:
 
     //functions
     std::vector<std::vector<GridSpace>> GenerateFloor(std::vector<std::vector<GridSpace>>& grid_array);
+    std::vector<std::vector<GridSpace>> GenerateWalls(std::vector<std::vector<GridSpace>> &grid_array);
     void SpawnNewWalker();
 };
+typedef std::vector<std::vector<LevelGenerator::GridSpace>> Matrix;

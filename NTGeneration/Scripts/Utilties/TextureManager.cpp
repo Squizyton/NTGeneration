@@ -5,6 +5,9 @@
 
 SDL_Texture* TextureManager::LoadTexture(const char* fileName)
 {
+
+    std::cout << "\nTrying to load:  " << fileName;
+    
     //Create a surface
     SDL_Surface* tmpSurface = IMG_Load(fileName);
     SDL_Texture* tex = SDL_CreateTextureFromSurface(Game::renderer, tmpSurface);
@@ -12,7 +15,7 @@ SDL_Texture* TextureManager::LoadTexture(const char* fileName)
 
     if (tex != nullptr)
     {
-        std::cout << "Loaded Texture:" << fileName;
+        std::cout << "\nLoaded Texture: " << fileName;
     }
 
     return tex;
