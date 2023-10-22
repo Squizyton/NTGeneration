@@ -17,7 +17,7 @@ void MapDrawer::DrawMap(Matrix& grid_array, int roomWidth, int roomHeight)
                 int offsetX = 32 / 2;
                 int offsetY = 32 / 2;
 
-                /
+               
                 dest.x = x * 1 * offsetX;
                 dest.y = y * 1 * offsetY;
                 TextureManager::Draw(ground_textures_[0], src, dest);
